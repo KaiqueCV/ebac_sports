@@ -16,11 +16,13 @@ const favoritosSlice = createSlice({
   reducers: {
     favoritar: (state, action: PayloadAction<Produto>) => {
       const produto = action.payload
-      if (state.itens.find((p) => p.id === produto.id)) {
-        const favoritosSemProduto = state.itens.filter(
-          (p) => p.id !== produto.id
-        )
+      // Verificar se o produto já está nos favoritos
+      const produtoIndex = state.itens.findIndex((p) => p.id === produto.id)
+      if (produtoIndex !== -1) {
+        // Se já estiver nos favoritos essa linha que vao remover
+        state.itens.splice(produtoIndex, 1)
       } else {
+        // Caso contrário, aqui que adiciona mais um id
         state.itens.push(produto)
       }
     }
@@ -29,12 +31,3 @@ const favoritosSlice = createSlice({
 
 export const { favoritar } = favoritosSlice.actions
 export default favoritosSlice.reducer
-
-// function favoritar(produto: Produto) {
-//   if (favoritos.find((p) => p.id === produto.id)) {
-//     const favoritosSemProduto = favoritos.filter((p) => p.id !== produto.id)
-//     setFavoritos(favoritosSemProduto)
-//   } else {
-//     setFavoritos([...favoritos, produto])
-//   }
-// }
